@@ -499,18 +499,21 @@
 
 
 // ================================================================
-// 12. FLOATING CTA — show after scroll
+// 12. FLOATING CTA + ZALO — show after scroll
 // ================================================================
 (function initFloatingCta() {
-  const cta = document.getElementById('floatingCta');
-  if (!cta) return;
+  const cta  = document.getElementById('floatingCta');
+  const zalo = document.getElementById('floatingZalo');
 
   function onScroll() {
-    if (window.scrollY > 400) cta.style.opacity = '1';
-    else                       cta.style.opacity = '0';
+    const show = window.scrollY > 400;
+    if (cta)  cta.style.opacity  = show ? '1' : '0';
+    if (zalo) zalo.style.opacity = show ? '1' : '0';
   }
-  cta.style.transition = 'opacity 0.4s ease';
-  cta.style.opacity = '0';
+
+  if (cta)  { cta.style.transition  = 'opacity 0.4s ease'; cta.style.opacity  = '0'; }
+  if (zalo) { zalo.style.transition = 'opacity 0.4s ease'; zalo.style.opacity = '0'; }
+
   window.addEventListener('scroll', onScroll, { passive: true });
 })();
 

@@ -14,8 +14,8 @@
   --blue:     #2A5C82;
   --blue-mid: #3B7197;
   --blue-light: #E2ECF3;
-  --red:      #E87A5D;
-  --red-dark: #C96147;
+  --red:      #E04B18;
+  --red-dark: #C53E10;
   --red-light: #FBEFEA;
   --dark:     #111827;
   --text:     #333333;
@@ -290,6 +290,35 @@ body:has(button:hover) .cursor-dot { width: 12px; height: 12px; }
   0%,100% { transform: scale(1); opacity: .3; }
   50% { transform: scale(1.45); opacity: 0; }
 }
+
+/* ================================================================
+   FLOATING ZALO
+================================================================ */
+.floating-zalo {
+  position: fixed; bottom: 96px; right: 32px;
+  z-index: 7000; text-decoration: none;
+  opacity: 0; transition: opacity 0.4s ease;
+}
+.floating-zalo-pulse {
+  position: absolute; inset: -8px;
+  background: #0068FF; border-radius: 50px;
+  opacity: .25; animation: pulse 2s ease infinite;
+  animation-delay: 0.6s;
+}
+.floating-zalo-inner {
+  position: relative; display: flex; align-items: center;
+  gap: 8px; background: #0068FF; color: var(--white);
+  padding: 13px 22px; border-radius: 50px;
+  font-weight: 700; font-size: 15px;
+  box-shadow: 0 4px 24px rgba(0,104,255,.40);
+  transition: transform .2s, box-shadow .2s;
+}
+.floating-zalo-inner svg { width: 22px; height: 22px; flex-shrink: 0; }
+.floating-zalo:hover .floating-zalo-inner {
+  transform: scale(1.07);
+  box-shadow: 0 8px 32px rgba(0,104,255,.60);
+}
+@media (max-width: 768px) { .floating-zalo { display: none !important; } }
 
 /* ================================================================
    HERO SECTION
@@ -919,176 +948,327 @@ a.contact-item-value:hover { color: var(--red); }
 }
 
 @media (max-width: 768px) {
-  :root { --bar-h: 34px; --nav-h: 58px; --mob-bar: 70px; }
-  body { cursor: auto; }
-  button { cursor: pointer; }
-  a { cursor: pointer; }
-  .cursor-dot, .cursor-ring { display: none; }
 
-  /* Mobile nav */
-  .nav-menu {
-    display: none; position: fixed; opacity: 0;
-    inset: 0; top: calc(var(--bar-h) + var(--nav-h));
-    background: rgba(255,255,255,0.98); backdrop-filter: blur(20px);
-    flex-direction: column; align-items: center; justify-content: center;
-    gap: 8px; z-index: 7500; padding: 40px 24px;
+  /* ============================================================
+     BASE — Con trỏ & biến CSS
+  ============================================================ */
+  :root { --bar-h: 0px; --nav-h: 60px; --mob-bar: 0px; }
+  body  { cursor: auto; padding-bottom: 0; }
+  button { cursor: pointer; }
+  a      { cursor: pointer; }
+  .cursor-dot, .cursor-ring { display: none !important; }
+  .container { padding: 0 16px; }
+
+  /* ============================================================
+     1. EMERGENCY BAR — Ẩn hoàn toàn trên mobile
+  ============================================================ */
+  .emergency-bar { display: none !important; }
+
+  /* ============================================================
+     2. NAVBAR — Gọn nhẹ, App-like
+  ============================================================ */
+  .navbar {
+    top: 0;
+    height: var(--nav-h);
+    background: rgba(255,255,255,0.97) !important;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 1px 12px rgba(42,92,130,0.10);
   }
+  .nav-container { padding: 0 16px; gap: 0; }
+  .logo-icon  { width: 30px; height: 30px; }
+  .logo-main  { font-size: 14px; }
+  .logo-sub   { font-size: 10px; letter-spacing: 2px; }
+  .nav-toggle {
+    display: flex;
+    margin-left: auto;
+    padding: 10px 8px;
+    z-index: 9999;
+  }
+  .nav-toggle span { background: var(--blue) !important; }
+  .nav-cta  { display: none; }
+
+  /* Full-screen overlay menu */
+  .nav-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    top: var(--nav-h);
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(24px) saturate(1.8);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    z-index: 7500;
+    padding: 24px;
+  }
+  .nav-menu.open { display: flex; }
   .nav-menu .nav-link {
-    font-size: 32px; font-family: var(--font-display); letter-spacing: 2px;
-    color: var(--blue); padding: 12px 24px; width: 100%; text-align: center;
+    font-size: 26px;
+    font-family: var(--font-display);
+    letter-spacing: 1.5px;
+    color: var(--blue);
+    padding: 14px 32px;
+    width: 100%;
+    text-align: center;
+    border-radius: 14px;
+    transition: background .2s;
+  }
+  .nav-menu .nav-link:hover,
+  .nav-menu .nav-link:active { background: var(--blue-light); }
+  .nav-menu .nav-link::after { display: none; }
+
+  /* Mobile sticky bar — ẩn vì đã có floating buttons */
+  .mobile-sticky-bar { display: none !important; }
+
+  /* ============================================================
+     3. FLOATING BUTTONS — Nhỏ gọn, đúng vị trí ngón tay cái
+  ============================================================ */
+  .floating-cta {
+    display: flex !important;
+    bottom: 20px;
+    right: 16px;
+    opacity: 1 !important;
+  }
+  .floating-cta-inner {
+    padding: 12px 16px;
+    font-size: 13px;
+    border-radius: 50px;
+    gap: 6px;
+  }
+  .floating-cta-inner svg { width: 16px; height: 16px; }
+  .floating-cta-pulse { inset: -6px; }
+
+  .floating-zalo {
+    display: flex !important;
+    bottom: 74px;
+    right: 16px;
+    opacity: 1 !important;
+  }
+  .floating-zalo-inner {
+    padding: 12px 16px;
+    font-size: 13px;
+    border-radius: 50px;
+    gap: 6px;
+  }
+  .floating-zalo-inner svg { width: 18px; height: 18px; }
+  .floating-zalo-pulse { inset: -6px; }
+
+  /* ============================================================
+     4. HERO SECTION — Typography & spacing chuẩn mobile
+  ============================================================ */
+  .hero-section {
+    padding-top: calc(var(--nav-h) + 24px);
+    padding-bottom: 48px;
+    min-height: 100svh;
+  }
+  .hero-content { padding: 0 16px; }
+
+  .hero-badge { font-size: 10px; letter-spacing: 2px; padding: 6px 12px; margin-bottom: 16px; }
+
+  .hero-title {
+    font-size: clamp(24px, 7.5vw, 34px);
+    line-height: 1.25;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+  }
+
+  .hero-subtitle { font-size: 13px; margin-bottom: 24px; line-height: 1.6; }
+
+  /* Contact Cards — 1 cột, Hotline to nhất ở trên */
+  .hero-contact-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .contact-card {
+    width: 100%;
+    padding: 12px 16px;
     border-radius: 12px;
   }
-  .nav-menu .nav-link:hover { background: var(--blue-light); }
-  .nav-menu .nav-link::after { display: none; }
-  .nav-toggle { display: flex; }
-  .nav-cta { display: none; }
-  .navbar:not(.scrolled) .nav-toggle span { background: var(--white); }
+  .contact-card-primary { padding: 14px 18px; }
+  .contact-card-icon    { font-size: 20px; }
+  .contact-card-number  { font-size: 18px; }
+  .contact-card-label   { font-size: 8px; }
+  .contact-card-sub     { font-size: 9px; }
 
-  /* Mobile sticky bar */
-  .mobile-sticky-bar { display: flex; }
-
-  .floating-cta { display: none; }
-  
-  /* Services: List View on Mobile */
-  .services-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
+  /* CTA Buttons */
+  .hero-ctas { flex-direction: column; gap: 10px; }
+  .btn-primary, .btn-outline {
+    width: 100%; text-align: center; justify-content: center;
+    padding: 14px 16px; font-size: 14px;
   }
+
+  /* ============================================================
+     5. SECTION HEADERS — Thu gọn tiêu đề
+  ============================================================ */
+  .section-header { margin-bottom: 32px; }
+  .section-title  { font-size: clamp(22px, 6vw, 28px); margin-bottom: 10px; }
+  .section-desc   { font-size: 14px; }
+  .section-tag    { font-size: 10px; letter-spacing: 2px; padding: 4px 12px; margin-bottom: 10px; }
+
+  /* ============================================================
+     6. SECTION PADDING — Hơi thở vừa phải, không tốn màn hình
+  ============================================================ */
+  .stats-section        { padding: 48px 0; }
+  .services-section     { padding: 48px 0; }
+  .projects-section     { padding: 48px 0; }
+  .whyus-section        { padding: 48px 0; }
+  .process-section      { padding: 48px 0; }
+  .testimonials-section { padding: 48px 0; }
+  .contact-section      { padding: 48px 0; }
+
+  /* ============================================================
+     7. STATS — 2x2 Grid gọn nhẹ
+  ============================================================ */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    box-shadow: none; border-radius: 0; border: none;
+  }
+  .stat-item {
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    padding: 18px 10px;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+  }
+  .stat-item::after { display: none; }
+  .stat-icon   { display: none; }
+  .stat-number { font-size: 28px; margin-bottom: 4px; }
+  .stat-plus   { font-size: 22px; }
+  .stat-label  { font-size: 10px; line-height: 1.3; text-align: center; }
+
+  /* ============================================================
+     8. SERVICES — 1 cột, card nằm ngang, ảnh bo góc mềm
+  ============================================================ */
+  .services-grid { grid-template-columns: 1fr; gap: 14px; }
   .service-card {
     flex-direction: row;
     align-items: stretch;
-    min-height: 140px;
+    min-height: 130px;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(42,92,130,0.08);
   }
   .service-card-img {
-    height: auto;
-    width: 35%;
-    flex-shrink: 0;
+    height: auto; width: 36%; flex-shrink: 0;
+    border-radius: 14px 0 0 14px;
+    overflow: hidden;
   }
-  .service-card-body { 
-    padding: 16px 12px; 
-    align-items: flex-start; 
-    text-align: left; 
+  .service-card-img img { border-radius: 0; }
+  .service-card-body {
+    padding: 14px 12px;
+    align-items: flex-start;
+    text-align: left;
     justify-content: space-between;
   }
-  .service-icon { display: none; }
-  .service-name { font-size: 15px; margin-bottom: 6px; line-height: 1.3; }
-  .service-desc { 
-    display: -webkit-box; 
-    font-size: 12px; 
-    margin-bottom: 12px; 
-    line-height: 1.4; 
+  .service-icon    { display: none; }
+  .service-name    { font-size: 14px; margin-bottom: 5px; line-height: 1.3; }
+  .service-desc    {
+    font-size: 11px; margin-bottom: 10px; line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
     line-clamp: 2;
-    -webkit-line-clamp: 2; 
-    -webkit-box-orient: vertical; 
-    overflow: hidden; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .service-features { display: none; }
-  .service-btn { font-size: 12px; padding: 6px 12px; width: fit-content; margin-top: auto; }
-  
-  /* Why Us: 1 Column Horizontal */
-  .why-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .why-card { 
+  .service-btn      { font-size: 11px; padding: 6px 12px; min-height: 36px; }
+
+  /* ============================================================
+     9. PROJECTS SLIDER
+  ============================================================ */
+  .slide         { height: 280px; }
+  .slide-overlay { padding: 20px; }
+  .slide-info h3 { font-size: 18px; }
+  .slide-info p  { font-size: 12px; }
+  .slider-btn    { width: 30px; height: 30px; font-size: 12px; }
+
+  /* ============================================================
+     10. WHY US — 1 cột ngang (Icon trái, text phải)
+  ============================================================ */
+  .why-grid { grid-template-columns: 1fr; gap: 10px; }
+  .why-card {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 48px 1fr;
     grid-template-rows: auto auto;
-    column-gap: 18px;
-    align-items: start;
-    text-align: left;
-    padding: 20px !important;
-  }
-  .why-icon { 
-    grid-row: 1 / span 2;
-    margin: 0; 
-    font-size: 34px; 
-    align-self: center;
-    width: auto; height: auto;
-  }
-  .why-card h3 { 
-    font-size: 16px; 
-    margin-bottom: 6px; 
-    line-height: 1.3; 
-  }
-  .why-card p { 
-    font-size: 13px; 
-    line-height: 1.5; 
-    margin: 0;
-  }
-
-  /* Hero */
-  .hero-contact-cards { flex-direction: column; }
-  .contact-card { min-width: 0; width: 100%; }
-  .hero-ctas { flex-direction: column; }
-  .btn-primary, .btn-outline { width: 100%; text-align: center; justify-content: center; padding: 16px; }
-
-  /* Stats: 2x2 Grid */
-  .stats-grid { 
-    display: grid; 
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 12px; 
-    box-shadow: none; 
-    border-radius: 0; 
-    border: none; 
-  }
-  .stat-item { 
-    border-radius: 12px; 
-    border: 1px solid var(--border); 
-    margin-bottom: 0; 
-    box-shadow: var(--shadow-sm); 
-    padding: 16px 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    column-gap: 16px;
     align-items: center;
+    text-align: left;
+    padding: 18px !important;
+    border-radius: 14px;
   }
-  .stat-item::after { display: none; }
-  .stat-icon { display: none; }
-  .stat-number { font-size: 26px; margin-bottom: 4px; }
-  .stat-label { font-size: 11px; line-height: 1.2; text-align: center; }
+  .why-icon {
+    grid-row: 1 / span 2;
+    font-size: 30px;
+    margin: 0;
+    width: auto; height: auto;
+    align-self: center;
+  }
+  .why-card h3 { font-size: 15px; margin-bottom: 4px; line-height: 1.3; }
+  .why-card p  { font-size: 12px; line-height: 1.5; margin: 0; color: var(--gray); }
 
-  /* Slider */
-  .slide { height: 360px; }
-  .slide-overlay { padding: 24px; }
-  .slide-info h3 { font-size: 22px; }
-  .slider-btn { width: 32px; height: 32px; font-size: 13px; }
+  /* ============================================================
+     11. PROCESS — Dọc, gọn
+  ============================================================ */
+  .process-steps { flex-direction: column; align-items: stretch; gap: 0; }
+  .process-step  { padding: 20px 0; }
+  .process-connector {
+    width: 2px; height: 28px;
+    background: linear-gradient(180deg, rgba(255,213,79,.4), #FFD54F, rgba(255,213,79,.4));
+    margin: 0 auto;
+  }
+  .process-connector::after {
+    left: 50%; right: auto; top: auto; bottom: -4px;
+    border: none;
+    border-right: 2px solid #FFD54F; border-bottom: 2px solid #FFD54F;
+    transform: translateX(-50%) rotate(45deg);
+  }
+  .step-number { font-size: 48px; }
+  .step-title  { font-size: 16px; }
+  .step-desc   { font-size: 12px; }
 
-  /* Footer */
-  .footer-grid { grid-template-columns: 1fr; }
-  .footer-top { padding: 48px 0 36px; }
+  /* ============================================================
+     12. TESTIMONIALS
+  ============================================================ */
+  .review-card    { padding: 24px 18px; }
+  .review-text    { font-size: 14px; }
+  .review-card::before { font-size: 72px; top: 10px; left: 18px; }
 
-  /* Form */
-  .form-row { grid-template-columns: 1fr; }
-  .contact-form { padding: 24px 20px; }
-  .review-card { padding: 28px 22px; }
-
-  /* Reduce section padding on mobile */
-  .stats-section      { padding: 56px 0; }
-  .services-section   { padding: 80px 0; }
-  .projects-section   { padding: 80px 0; }
-  .whyus-section      { padding: 80px 0; }
-  .process-section    { padding: 80px 0; }
-  .testimonials-section { padding: 80px 0; }
-  .contact-section    { padding: 80px 0; }
-  .section-header     { margin-bottom: 48px; }
-
-  /* Touch targets */
-  .service-btn, .btn-primary, .btn-outline { min-height: 48px; }
+  /* ============================================================
+     13. CONTACT FORM
+  ============================================================ */
+  .contact-layout { grid-template-columns: 1fr; gap: 24px; }
+  .form-row       { grid-template-columns: 1fr; }
+  .contact-form   { padding: 20px 16px; border-radius: 14px; }
   .form-submit-btn { min-height: 52px; font-size: 16px; }
+
+  /* ============================================================
+     14. FOOTER
+  ============================================================ */
+  .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+  .footer-top  { padding: 40px 0 28px; }
+  .footer-desc { font-size: 13px; }
+
+  /* ============================================================
+     15. TOUCH TARGETS — Ngón tay bấm dễ dàng
+  ============================================================ */
+  .service-btn, .btn-primary, .btn-outline { min-height: 46px; }
+  .slider-btn, .review-btn { width: 40px; height: 40px; }
 }
 
 @media (max-width: 480px) {
-  .hero-title { font-size: clamp(24px, 8vw, 38px); }
-  .section-title { font-size: clamp(28px, 8vw, 44px); }
-  .intro-char { font-size: clamp(18px, 6vw, 40px); letter-spacing: 0px; }
-  .hero-badge { font-size: 10px; letter-spacing: 2px; padding: 6px 12px; }
-  .hero-subtitle { font-size: 14px; }
-  .contact-card-number { font-size: 19px; }
-  .process-step { padding: 16px 0; }
-  .why-card { padding: 24px 20px; }
-  .stat-item { padding: 28px 16px; }
+  .hero-title   { font-size: clamp(22px, 7vw, 28px); }
+  .hero-badge   { font-size: 9px; }
+  .intro-char   { font-size: clamp(16px, 5.5vw, 36px); letter-spacing: 0; }
+  .contact-card-number { font-size: 16px; }
+  .stat-number  { font-size: 24px; }
+  .stat-label   { font-size: 9px; letter-spacing: 1px; }
+  .slide        { height: 240px; }
+  .slide-info h3 { font-size: 16px; }
 }
 
 /* Large touch devices — ensure tap areas */
