@@ -39,24 +39,24 @@
   // Animate progress bar
   let prog = 0;
   const progressInterval = setInterval(() => {
-    prog += 2 + Math.random() * 3;
+    prog += 4 + Math.random() * 4;
     if (prog >= 100) {
       prog = 100;
       clearInterval(progressInterval);
     }
     fill.style.width = prog + '%';
     percent.textContent = Math.floor(prog) + '%';
-  }, 50);
+  }, 40);
 
-  // Dismiss intro after ~2.6s
+  // Dismiss intro after ~1.8s
   setTimeout(() => {
     clearInterval(sparkInterval);
     screen.classList.add('exit');
     setTimeout(() => {
       screen.style.display = 'none';
       document.body.style.overflow = '';
-    }, 800);
-  }, 2600);
+    }, 600);
+  }, 1800);
 
   document.body.style.overflow = 'hidden';
 })();
@@ -118,30 +118,39 @@
   onScroll();
 
   // Mobile toggle
-  if (toggle) {
-    toggle.addEventListener('click', () => {
-      menu.classList.toggle('open');
-      const spans = toggle.querySelectorAll('span');
-      if (menu.classList.contains('open')) {
-        spans[0].style.transform = 'translateY(7px) rotate(45deg)';
-        spans[1].style.opacity   = '0';
-        spans[2].style.transform = 'translateY(-7px) rotate(-45deg)';
-      } else {
-        spans.forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
-      }
-    });
+  const overlay = document.getElementById('menuOverlay');
+  function openMenu() {
+    menu.classList.add('open');
+    if (overlay) overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    const spans = toggle.querySelectorAll('span');
+    spans[0].style.transform = 'translateY(7px) rotate(45deg)';
+    spans[1].style.opacity   = '0';
+    spans[2].style.transform = 'translateY(-7px) rotate(-45deg)';
+  }
+  function closeMenu() {
+    menu.classList.remove('open');
+    if (overlay) overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    if (toggle) {
+      toggle.querySelectorAll('span').forEach(s => {
+        s.style.transform = ''; s.style.opacity = '';
+      });
+    }
   }
 
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      menu.classList.remove('open');
-      if (toggle) {
-        toggle.querySelectorAll('span').forEach(s => {
-          s.style.transform = ''; s.style.opacity = '';
-        });
-      }
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      if (menu.classList.contains('open')) closeMenu();
+      else openMenu();
     });
+  }
+  if (overlay) overlay.addEventListener('click', closeMenu);
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', closeMenu);
   });
+
 
   // Smooth scroll for all anchor links
   document.querySelectorAll('a[href^="#"]').forEach(a => {
@@ -276,7 +285,7 @@
     document.querySelectorAll('.hero-section .reveal-text').forEach(el => {
       el.classList.add('visible');
     });
-  }, 2800);
+  }, 2000);
 })();
 
 
@@ -690,12 +699,15 @@
 // 19. MAGNETIC BUTTONS (For desktop)
 // ================================================================
 (function initMagneticButtons() {
+  // Disable magnetic effect on mobile/touch devices to prevent layout overlap
+  if (window.innerWidth <= 768 || window.matchMedia("(pointer: coarse)").matches) return;
+
   const magnets = document.querySelectorAll(".btn-primary, .nav-cta, .floating-cta-inner");
   magnets.forEach(btn => {
     btn.addEventListener("mousemove", function(e) {
       const position = btn.getBoundingClientRect();
-      const x = e.pageX - position.left - position.width / 2;
-      const y = e.pageY - position.top - position.height / 2;
+      const x = e.clientX - position.left - position.width / 2;
+      const y = e.clientY - position.top - position.height / 2;
       
       gsap.to(btn, {
         x: x * 0.3,
