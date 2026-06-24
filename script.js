@@ -671,28 +671,7 @@
     });
   });
 
-  // Modern Mobile Menu GSAP Animation
-  const navToggle = document.getElementById("navToggle");
-  const navMenu = document.getElementById("navMenu");
-  const navLinks = navMenu.querySelectorAll(".nav-link");
-
-  if(navToggle) {
-    let menuOpen = false;
-    navToggle.addEventListener("click", () => {
-      menuOpen = !menuOpen;
-      if(menuOpen) {
-        gsap.to(navMenu, { display: "flex", opacity: 1, duration: 0.4, ease: "power3.inOut" });
-        gsap.fromTo(navLinks, 
-          { y: 50, opacity: 0, rotateZ: 5 },
-          { y: 0, opacity: 1, rotateZ: 0, duration: 0.6, stagger: 0.1, ease: "power4.out", delay: 0.2 }
-        );
-      } else {
-        gsap.to(navMenu, { opacity: 0, duration: 0.4, ease: "power3.inOut", onComplete: () => {
-          navMenu.style.display = "none";
-        }});
-      }
-    });
-  }
+  // Modern Mobile Menu GSAP Animation removed to prevent conflict with CSS toggle
 })();
 
 // ================================================================

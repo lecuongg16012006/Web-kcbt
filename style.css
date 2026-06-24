@@ -1001,28 +1001,30 @@ a.contact-item-value:hover { color: var(--red); }
   .nav-toggle span { background: var(--blue) !important; }
   .nav-cta  { display: none; }
 
-  /* Slide-in drawer from right */
+  /* Slide-in drawer from right - Clean & Premium */
   .nav-menu {
     position: fixed;
     top: 0;
     right: 0;
-    width: 270px;
-    height: 100vh;
-    background: var(--blue);
+    width: 85%;
+    max-width: 340px;
+    height: 100dvh;
+    background: var(--white);
     flex-direction: column;
     align-items: flex-start;
-    justify-content: flex-start;
-    gap: 0;
+    justify-content: center;
+    gap: 12px;
     z-index: 9100;
-    padding: 80px 0 40px;
-    transition: transform 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                visibility 0.38s;
-    box-shadow: -8px 0 40px rgba(0,0,0,0.25);
+    padding: 80px 32px 40px;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                visibility 0.4s;
+    box-shadow: -10px 0 50px rgba(11,61,145,0.12);
     display: flex;
     overflow-y: auto;
     transform: translateX(100%);
     visibility: hidden;
     pointer-events: none;
+    border-left: 1px solid var(--border);
   }
   .nav-menu.open {
     transform: translateX(0);
@@ -1033,38 +1035,33 @@ a.contact-item-value:hover { color: var(--red); }
   /* Đường phân cách */
   .nav-menu li {
     width: 100%;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
-  .nav-menu li:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
 
   .nav-menu .nav-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 14px;
+    display: block;
+    font-size: 22px;
     font-family: var(--font-display);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.88);
-    padding: 18px 28px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--blue);
+    padding: 14px 0;
     width: 100%;
     text-align: left;
     border-radius: 0;
-    transition: background 0.2s, color 0.2s, padding-left 0.2s;
+    transition: color 0.3s, transform 0.3s;
     outline: none !important;
     -webkit-tap-highlight-color: transparent;
   }
   .nav-menu .nav-link:hover,
   .nav-menu .nav-link:active {
-    background: rgba(255,255,255,0.10);
-    color: #ffffff;
-    padding-left: 36px;
+    color: var(--red);
+    background: transparent;
+    transform: translateX(8px);
   }
   .nav-menu .nav-link::after { display: none; }
-  .nav-menu .nav-link:focus { outline: none !important; box-shadow: none !important; background: rgba(255,255,255,0.08); }
 
   /* Accent line trái */
-  .nav-menu li:first-child .nav-link { color: #FF8C42; font-weight: 800; }
+  .nav-menu li:first-child .nav-link { color: var(--red); }
 
   /* Mobile sticky bar — ẩn vì đã có floating buttons */
   .mobile-sticky-bar { display: none !important; }
@@ -1115,37 +1112,37 @@ a.contact-item-value:hover { color: var(--red); }
   .hero-badge { font-size: 10px; letter-spacing: 2px; padding: 6px 12px; margin-bottom: 16px; }
 
   .hero-title {
-    font-size: clamp(24px, 7.5vw, 34px);
-    line-height: 1.25;
-    letter-spacing: 1px;
-    margin-bottom: 14px;
+    font-size: clamp(26px, 8.5vw, 38px);
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
   }
 
-  .hero-subtitle { font-size: 13px; margin-bottom: 24px; line-height: 1.6; }
+  .hero-subtitle { font-size: 14px; margin-bottom: 30px; line-height: 1.6; color: var(--text); }
 
-  /* Contact Cards — 1 cột, Hotline to nhất ở trên */
+  /* Contact Cards */
   .hero-contact-cards {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 24px;
   }
   .contact-card {
     width: 100%;
-    padding: 12px 16px;
-    border-radius: 12px;
+    padding: 14px 16px;
+    border-radius: 16px;
   }
-  .contact-card-primary { padding: 14px 18px; }
-  .contact-card-icon    { font-size: 20px; }
-  .contact-card-number  { font-size: 18px; }
-  .contact-card-label   { font-size: 8px; }
-  .contact-card-sub     { font-size: 9px; }
+  .contact-card-primary { padding: 16px; }
+  .contact-card-icon    { font-size: 24px; }
+  .contact-card-number  { font-size: 18px; margin-top: 2px; }
+  .contact-card-label   { font-size: 9px; opacity: 0.8; }
+  .contact-card-sub     { display: none; } /* Giấu bớt subtext cho gọn */
 
   /* CTA Buttons */
-  .hero-ctas { flex-direction: column; gap: 10px; }
+  .hero-ctas { flex-direction: column; gap: 12px; }
   .btn-primary, .btn-outline {
     width: 100%; text-align: center; justify-content: center;
-    padding: 14px 16px; font-size: 14px;
+    padding: 16px 20px; font-size: 15px; border-radius: 50px;
   }
 
   /* ============================================================
@@ -1191,40 +1188,36 @@ a.contact-item-value:hover { color: var(--red); }
   .stat-label  { font-size: 10px; line-height: 1.3; text-align: center; }
 
   /* ============================================================
-     8. SERVICES — 1 cột, card nằm ngang, ảnh bo góc mềm
+     8. SERVICES — Dọc, rộng rãi, hình ảnh lớn (đẹp hơn card ngang)
   ============================================================ */
-  .services-grid { grid-template-columns: 1fr; gap: 14px; }
+  .services-grid { grid-template-columns: 1fr; gap: 24px; }
   .service-card {
-    flex-direction: row;
-    align-items: stretch;
-    min-height: 130px;
-    border-radius: 14px;
-    box-shadow: 0 4px 16px rgba(42,92,130,0.08);
+    flex-direction: column;
+    min-height: auto;
+    border-radius: 20px;
+    box-shadow: var(--shadow-sm);
   }
   .service-card-img {
-    height: auto; width: 36%; flex-shrink: 0;
-    border-radius: 14px 0 0 14px;
-    overflow: hidden;
+    width: 100%;
+    height: 220px;
+    border-radius: 20px 20px 0 0;
   }
-  .service-card-img img { border-radius: 0; }
+  .service-card-img img { border-radius: 20px 20px 0 0; }
   .service-card-body {
-    padding: 14px 12px;
+    padding: 24px 20px;
     align-items: flex-start;
     text-align: left;
-    justify-content: space-between;
   }
-  .service-icon    { display: none; }
-  .service-name    { font-size: 14px; margin-bottom: 5px; line-height: 1.3; }
-  .service-desc    {
-    font-size: 11px; margin-bottom: 10px; line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  .service-icon { display: flex; width: 44px; height: 44px; margin-bottom: 16px; border-radius: 12px; }
+  .service-icon svg { width: 22px; height: 22px; }
+  .service-name { font-size: 20px; margin-bottom: 10px; line-height: 1.3; }
+  .service-desc {
+    font-size: 14px; margin-bottom: 16px; line-height: 1.6;
+    display: block;
   }
-  .service-features { display: none; }
-  .service-btn      { font-size: 11px; padding: 6px 12px; min-height: 36px; }
+  .service-features { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+  .service-features li { font-size: 13px; margin: 0; }
+  .service-btn { font-size: 14px; padding: 12px 24px; min-height: auto; margin-top: auto; }
 
   /* ============================================================
      9. PROJECTS SLIDER
@@ -1236,28 +1229,27 @@ a.contact-item-value:hover { color: var(--red); }
   .slider-btn    { width: 30px; height: 30px; font-size: 12px; }
 
   /* ============================================================
-     10. WHY US — 1 cột ngang (Icon trái, text phải)
+     10. WHY US — 1 cột ngang (Rộng rãi hơn)
   ============================================================ */
-  .why-grid { grid-template-columns: 1fr; gap: 10px; }
+  .why-grid { grid-template-columns: 1fr; gap: 14px; }
   .why-card {
     display: grid;
-    grid-template-columns: 48px 1fr;
+    grid-template-columns: 52px 1fr;
     grid-template-rows: auto auto;
-    column-gap: 16px;
+    column-gap: 18px;
     align-items: center;
     text-align: left;
-    padding: 18px !important;
-    border-radius: 14px;
+    padding: 24px 20px !important;
+    border-radius: 16px;
   }
   .why-icon {
     grid-row: 1 / span 2;
-    font-size: 30px;
+    font-size: 36px;
     margin: 0;
-    width: auto; height: auto;
-    align-self: center;
+    align-self: start;
   }
-  .why-card h3 { font-size: 15px; margin-bottom: 4px; line-height: 1.3; }
-  .why-card p  { font-size: 12px; line-height: 1.5; margin: 0; color: var(--gray); }
+  .why-card h3 { font-size: 16px; margin-bottom: 6px; line-height: 1.3; }
+  .why-card p  { font-size: 13px; line-height: 1.6; margin: 0; color: var(--gray); }
 
   /* ============================================================
      11. PROCESS — Dọc, gọn
