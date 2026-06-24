@@ -62,43 +62,7 @@
 })();
 
 
-// ================================================================
-// 2. CUSTOM MAGNETIC CURSOR
-// ================================================================
-(function initCursor() {
-  const dot  = document.getElementById('cursorDot');
-  const ring = document.getElementById('cursorRing');
-  if (!dot || !ring) return;
-
-  let mx = 0, my = 0;
-  let rx = 0, ry = 0;
-  let raf;
-
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX;
-    my = e.clientY;
-    dot.style.left = mx + 'px';
-    dot.style.top  = my + 'px';
-  });
-
-  function animateRing() {
-    rx += (mx - rx) * 0.14;
-    ry += (my - ry) * 0.14;
-    ring.style.left = rx + 'px';
-    ring.style.top  = ry + 'px';
-    raf = requestAnimationFrame(animateRing);
-  }
-  animateRing();
-
-  document.addEventListener('mouseleave', () => {
-    dot.style.opacity  = '0';
-    ring.style.opacity = '0';
-  });
-  document.addEventListener('mouseenter', () => {
-    dot.style.opacity  = '1';
-    ring.style.opacity = '0.6';
-  });
-})();
+// 2. CUSTOM MAGNETIC CURSOR removed
 
 
 // ================================================================
