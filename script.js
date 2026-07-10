@@ -427,11 +427,18 @@
     submitBtn.disabled = true;
 
     const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
 
-    fetch(form.action || 'https://formsubmit.co/ajax/lecuongg16012006@gmail.com', {
-      method: form.method || 'POST',
-      body: formData,
+    // Auto-detect API URL: localhost for dev, Render for production
+    const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3000/api/contact'
+      : 'https://web-kcbt.onrender.com/api/contact';
+
+    fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify(data),
       headers: {
+          'Content-Type': 'application/json',
           'Accept': 'application/json'
       }
     }).then(response => {
@@ -439,18 +446,22 @@
         form.style.display = 'none';
         success.classList.add('show');
       } else {
-        response.json().then(data => {
-          if (Object.hasOwn(data, 'errors')) {
-            alert(data["errors"].map(error => error["message"]).join(", "));
+        response.json().then(resData => {
+          if (resData.error) {
+            alert(resData.error);
           } else {
             alert("Rất tiếc, đã có lỗi xảy ra. Vui lòng thử lại hoặc gọi điện trực tiếp!");
           }
           submitBtn.innerHTML = '<span class="btn-text">Gửi Yêu Cầu Báo Giá</span><span class="btn-shine"></span>';
           submitBtn.disabled = false;
+        }).catch(() => {
+          alert("Rất tiếc, đã có lỗi xảy ra. Vui lòng thử lại hoặc gọi điện trực tiếp!");
+          submitBtn.innerHTML = '<span class="btn-text">Gửi Yêu Cầu Báo Giá</span><span class="btn-shine"></span>';
+          submitBtn.disabled = false;
         });
       }
     }).catch(error => {
-      alert("Lỗi kết nối mạng. Vui lòng thử lại!");
+      alert("Lỗi kết nối mạng đến server. Vui lòng thử lại!");
       submitBtn.innerHTML = '<span class="btn-text">Gửi Yêu Cầu Báo Giá</span><span class="btn-shine"></span>';
       submitBtn.disabled = false;
     });
